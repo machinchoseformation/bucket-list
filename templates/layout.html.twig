@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bucket-List{% endblock %}</title>
+
+    {# on utilise asset() pour générer le bon chemin
+     vers les fichiers .css, .js ou img... #}
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    {% block css %}{% endblock %}
+
+    <link rel="icon" href="{{ asset('img/bucket.svg') }}">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>
+                <a href="{{ path('home') }}" title="Bucket-List">
+                    <img alt="Bucket-List" src="{{ asset('img/bucket.svg') }}"> Bucket-List
+                </a>
+            </h1>
+        </header>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <main>
+            {% block main %}{% endblock %}
+        </main>
+        <footer>
+            {{ "now"|date("Y") }}
+
+            <nav>
+                {# path() prend le 'name' des routes en argument #}
+                <a href="{{ path('home') }}">Accueil</a>
+                <a href="{{ path('faq') }}">FAQ</a>
+                <a href="{{ path('cgu') }}">CGU</a>
+                <a href="{{ path('contact') }}">Contact</a>
+                <a href="{{ path('test', {'id': 123}) }}">test</a>
+            </nav>
+
+        </footer>
+    </div>
+
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    {% block js %}{% endblock %}
+</body>
+</html>

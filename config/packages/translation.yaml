@@ -1,0 +1,8 @@
+framework:
+    default_locale: '%locale%'
+
+    translator:
+        enabled: false #désactive le système de traduction
+        default_path: '%kernel.project_dir%/translations'
+        fallbacks:
+            - '%locale%'

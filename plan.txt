@@ -1,0 +1,73 @@
+Bucket List | Symfony
+
+Le site permet à sa communauté de créer une liste de choses à faire absolument avant de mourir.
+
+Les idées de choses à faire sont fournies par la communauté. 
+
+Chaque utilisateur a sa propre liste, en utilisant les idées des autres ou en en ajoutant de nouvelles, et peut "cocher" les choses qui ont été réalisées.
+
+Le site est en français.
+
+Voici les principaux écrans/actions du site : 
+
+	PAGES STATIQUES
+
+		Accueil
+            -> Affichage des 5 dernières idées
+            -> Affichage du nombre total d'idées en bdd
+		CGU
+		FAQ
+		Contact
+            -> formulaire d'envoi de mail à l'admin du site
+
+	LES IDÉES DE LA COMMUNAUTÉ
+	 	
+	 	Parcourir/Consulter les idées de la communauté (liste)
+            -> paginer
+            -> trier
+            -> filtrer
+            -> rechercher
+	 	Détail d'une idée
+	 	Créer une idée
+            -> limiter aux users connectés
+	 	Modifier une idée
+            -> limiter à l'auteur (connecté) de l'idée
+
+	BUCKET LIST PERSO
+
+		Ajouter une idée à sa liste
+            -> à partir de la page de détail d'une idée 
+        Consulter sa liste
+            -> Auprès de chaque idée, des boutons permettant de : 
+                - retirer l'idée de sa liste
+                - la marquer comme réalisée
+
+    SYSTÈME D'UTILISATEUR
+        Inscription 
+        Connexion
+        Déconnexion
+        Modifier mon profil
+
+    COMMENTAIRES ET VOTES
+        Ajouter un commentaire et un rating (sur 5) sur la page détail 
+        Afficher les commentaires et les ratings 
+        Afficher la moyenne des ratings
+
+Une "idée" doit avoir les caractéristiques suivantes : 
+
+	L'idée en tant que telle
+	Une description longue
+	Une image la représentant
+	Une catégorie parmi :
+		Travail
+		Loisir
+		Voyage
+		Vie personnelle 
+		Sport
+		Farfelu
+		Autre
+	Date de création
+	Date de la dernière modif
+	Auteur
+
+
