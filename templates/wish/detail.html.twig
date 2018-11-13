@@ -7,6 +7,8 @@
 
     <a href="{{ path('wish_remove', {'id': wish.id}) }}" class="btn btn-danger">
         Supprimer</a>
+    <a href="{{ path('wish_edit', {'id': wish.id}) }}" class="btn btn-warning">
+        Modifier</a>
 {% endblock %}
 
 {% block title %}{{ parent() }} | Détails{% endblock %}

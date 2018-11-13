@@ -33,6 +33,43 @@ class WishController extends Controller
    }
 
 
+    /**
+     * @Route("/idee/modifier/{id}", name="wish_edit")
+     */
+    public function edit($id, Request $request)
+    {
+        //récupère le wish à modifier depuis la bdd
+        $wishRepository = $this->getDoctrine()->getRepository(Wish::class);
+        $wish = $wishRepository->find($id);
+
+        if (empty($wish)){
+            throw $this->createNotFoundException("Oups ! Cette idée n'existe pas !");
+        }
+
+        //crée le form en lui passant notre instance
+        $form = $this->createForm(WishType::class, $wish);
+        //prend les données soumises et les injecte dans notre entité
+        $form->handleRequest($request);
+
+        //si le formulaire est valide...
+        if ($form->isSubmitted() && $form->isValid()){
+            //renseigne les champs manquants
+            $wish->setDateUpdated( new \DateTime() );
+
+            //sauvegarde
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            //redirige avec un message de succès
+            $this->addFlash("success", "Votre idée a bien été modifiée !");
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render("wish/edit.html.twig", [
+            "form" => $form->createView()
+        ]);
+    }
+
    /**
     * @Route("/idee/creer", name="wish_create")
     */

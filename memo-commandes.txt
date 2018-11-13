@@ -1,0 +1,37 @@
+Memo des commandes
+
+Pour l'installation, dans cmder... : 
+
+    //naviguer vers son htdocs
+    cd c:/xampp/htdocs 
+
+    //installe symfony
+    composer create-project symfony/website-skeleton "nom-du-dossier" 3.4
+
+    //navigue dans le nouveau dossier créé 
+    cd nom-du-dossier/
+
+    //installe le package pour Apache
+    composer req apache-pack 
+
+    //installe faker pour aider à générer des données bidons 
+    composer require fzaninotto/faker 
+
+php bin/console ...
+
+    //génère un contrôleur
+    make:controller
+
+    //génère une entité ou la modifie
+    make:entity
+
+    //génère une classe de formulaire associée à une entité
+    make:form
+
+    //crée la bdd telle qu'elle est configurée dans le fichier .env
+    doctrine:database:create
+
+    //mettre à jour les tables en fonction des entités
+    // --dump-sql pour voir la requête SQL seulement 
+    doctrine:schema:update --force 
+
