@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Wish;
+use App\Form\CommentType;
 use App\Form\WishType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,11 +13,49 @@ use Symfony\Component\Routing\Annotation\Route;
 class WishController extends Controller
 {
     /**
+     * @Route("/idees/liste", name="wish_list")
+     */
+    public function list()
+    {
+        $repo = $this->getDoctrine()->getRepository(Wish::class);
+        //voir dans WishRepository pour cette méthode perso
+        $wishes = $repo->findListWishes();
+
+        return $this->render("wish/list.html.twig", [
+            "wishes" => $wishes,
+        ]);
+    }
+
+
+    /**
      * @Route("/details/{id}", name="wish_detail")
      */
-   public function detail(Wish $wish)
+   public function detail(Wish $wish, Request $request)
    {
-       return $this->render("wish/detail.html.twig", ["wish" => $wish]);
+       $comment = new Comment();
+       $commentForm = $this->createForm(CommentType::class, $comment);
+
+       $commentForm->handleRequest($request);
+
+       if ($commentForm->isSubmitted() && $commentForm->isValid()){
+           $comment->setDateCreated( new \DateTime() );
+           $comment->setWish($wish);
+
+           $entityManager = $this->getDoctrine()->getManager();
+           $entityManager->persist($comment);
+           $entityManager->flush();
+
+           $this->addFlash("success", "Votre commentaire a été publié !");
+           //on redirige ici-même pour vider le formulaire et éviter la resoumission des données
+           return $this->redirectToRoute("wish_detail", [
+               "id" => $wish->getId()
+           ]);
+       }
+
+       return $this->render("wish/detail.html.twig", [
+           "wish" => $wish,
+           "commentForm" => $commentForm->createView()
+       ]);
    }
 
    /**

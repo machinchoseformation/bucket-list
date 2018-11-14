@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block main %}
+
+    <h2>Les idées !!</h2>
+
+    <section>
+        {% for wish in wishes %}
+            <article>
+                <h3>{{ wish.label }}</h3>
+            </article>
+        {% endfor %}
+    </section>
+
+{% endblock %}
+
+{% block title %}Toutes les idées{% endblock %}

@@ -30,6 +30,7 @@ class Category
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Wish", mappedBy="category")
+     * @ORM\OrderBy({"label" = "DESC"})
      */
     private $wishes;
 

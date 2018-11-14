@@ -2,6 +2,7 @@
 
 {% block main %}
     <h2>{{ wish.label }}</h2>
+    <p>Moyenne des notes : {{ wish.getRatingAverage() }} / 5</p>
     <div>Classée dans : {{ wish.category.name }}</div>
     <p>{{ wish.dateCreated|date("d/m/Y à H:i:s") }}</p>
     <div><p>{{ wish.description }}</p></div>
@@ -10,6 +11,21 @@
         Supprimer</a>
     <a href="{{ path('wish_edit', {'id': wish.id}) }}" class="btn btn-warning">
         Modifier</a>
+
+    {{ form_start(commentForm) }}
+    {{ form_widget(commentForm) }}
+    <button>Go !</button>
+    {{ form_end(commentForm) }}
+
+    <h3>Les derniers commentaires</h3>
+    <div>
+        {% for comment in wish.comments %}
+            <article>
+                <p>{{ comment.content }}</p>
+                <p>{{ comment.rating }} / 5</p>
+            </article>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block title %}{{ parent() }} | Détails{% endblock %}
