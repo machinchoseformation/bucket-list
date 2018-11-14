@@ -22,10 +22,18 @@
         <header>
             <h1>
                 <a href="{{ path('home') }}" title="Bucket-List">
-                    <img alt="Bucket-List" src="{{ asset('img/bucket.svg') }}"> Bucket-List
+                    <img alt="Bucket-List" src="{{ asset('img/bucket.svg') }}">Bucket-List
                 </a>
             </h1>
+            <nav>
+                <ul class="nav nav-pills">
+                    <li><a href="{{ path('home') }}" title="Retour à l'accueil">Accueil</a></li>
+                    <li><a href="{{ path('wish_create') }}" title="Ajouter une idée">Ajouter une idée</a></li>
+                </ul>
+            </nav>
         </header>
+
+        <hr>
 
         {% for label, messages in app.flashes %}
             {% for message in messages %}
@@ -39,15 +47,18 @@
             {% block main %}{% endblock %}
         </main>
         <footer>
-            {{ "now"|date("Y") }}
+            <hr>
+            <p class="text-center">{{ "now"|date("Y") }} bucket-list</p>
 
             <nav>
-                {# path() prend le 'name' des routes en argument #}
-                <a href="{{ path('home') }}">Accueil</a>
-                <a href="{{ path('faq') }}">FAQ</a>
-                <a href="{{ path('cgu') }}">CGU</a>
-                <a href="{{ path('contact') }}">Contact</a>
-                <a href="{{ path('test', {'id': 123}) }}">test</a>
+                <ul class="nav nav-pills">
+                    {# path() prend le 'name' des routes en argument #}
+                    <li><a href="{{ path('home') }}">Accueil</a></li>
+                    <li><a href="{{ path('faq') }}">FAQ</a></li>
+                    <li><a href="{{ path('cgu') }}">CGU</a></li>
+                    <li><a href="{{ path('contact') }}">Contact</a></li>
+                    <li><a href="{{ path('test', {'id': 123}) }}">test</a></li>
+                </ul>
             </nav>
 
         </footer>

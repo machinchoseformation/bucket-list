@@ -1,11 +1,26 @@
-body {
-    background-color: honeydew;
-}
-
 header img {
     height: 50px;
 }
 
 h1 {
     font-family: 'Alfa Slab One', cursive;
+    font-size: 50px;
+}
+
+h1 img {
+    position: relative;
+    top: -10px;
+    margin-right: 5px;
+}
+
+footer {
+    margin-top: 60px;
+}
+
+footer nav {
+    text-align: center;
+}
+
+footer nav ul {
+    display: inline-block;
 }
