@@ -32,8 +32,10 @@ class DummyDataCommand extends ContainerAwareCommand
         $entityManager = $doctrine->getManager();
 
         //vide les tables avec une requête SQL brute
+        $connection->query("SET FOREIGN_KEY_CHECKS = 0");
         $connection->query("TRUNCATE TABLE wish");
         $connection->query("TRUNCATE TABLE category");
+        $connection->query("SET FOREIGN_KEY_CHECKS = 1");
         $io->text("Tables truncated!");
 
         $categories = ["Voyage", "Sport", "Folie", "Développement"];
@@ -44,13 +46,16 @@ class DummyDataCommand extends ContainerAwareCommand
             $entityManager->persist($category);
         }
         $entityManager->flush();
+        $io->text("Categories added!");
 
         //récupère tous les objets Category qu'on vient de créer
         $categoryRepository = $doctrine->getRepository(Category::class);
         $allCategories = $categoryRepository->findAll();
 
-        $io->progressStart(1000);
-        for($i=0; $i<1000; $i++) {
+        $wishNum = 1000;
+        $io->text("Adding $wishNum wishes...");
+        $io->progressStart($wishNum);
+        for($i=0; $i<$wishNum; $i++) {
             $wish = new Wish();
 
             //prend une catégorie au hasard et l'affecte à notre wish
@@ -69,7 +74,8 @@ class DummyDataCommand extends ContainerAwareCommand
         }
         $io->progressFinish();
         $entityManager->flush();
+        $io->text("$wishNum wishes added!");
 
-        $io->success('1000 wishes loaded!');
+        $io->success('Done!');
     }
 }
