@@ -1,0 +1,10 @@
+Système de commentaires
+
+Votre objectif est de créer un système de commentaires sur les idées de chose à faire avant de mourir : Il doit être possible, à partir de la page de détail d'une idée, de laisser un commentaire ET une note sur 5. L'utilisateur doit également fournir son email, mais celui-ci n'est pas affiché sur le site. 
+
+Il n'est pas nécessaire de pouvoir modifier ou supprimer les commentaires. 
+
+Sur la page de détail des idées, sous le formulaire d'ajout de commentaire, les commentaires sont affichés du plus récent au plus ancien, avec auprès de chacun la note sur 5. 
+La moyenne des notes est également affichée auprès du label de l'idée. 
+
+Adapter les fixtures pour ajouter des commentaires aux idées !

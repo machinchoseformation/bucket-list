@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Category;
 use App\Entity\Wish;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,13 +31,32 @@ class DummyDataCommand extends ContainerAwareCommand
         $connection = $doctrine->getConnection();
         $entityManager = $doctrine->getManager();
 
-        //vide la table avec une requête SQL brute
+        //vide les tables avec une requête SQL brute
         $connection->query("TRUNCATE TABLE wish");
-        $io->text("Table wish truncated!");
+        $connection->query("TRUNCATE TABLE category");
+        $io->text("Tables truncated!");
+
+        $categories = ["Voyage", "Sport", "Folie", "Développement"];
+
+        foreach($categories as $cat){
+            $category = new Category();
+            $category->setName($cat);
+            $entityManager->persist($category);
+        }
+        $entityManager->flush();
+
+        //récupère tous les objets Category qu'on vient de créer
+        $categoryRepository = $doctrine->getRepository(Category::class);
+        $allCategories = $categoryRepository->findAll();
 
         $io->progressStart(1000);
         for($i=0; $i<1000; $i++) {
             $wish = new Wish();
+
+            //prend une catégorie au hasard et l'affecte à notre wish
+            $randomCategory = $allCategories[array_rand($allCategories)];
+            $wish->setCategory($randomCategory);
+
             $wish->setLabel($faker->sentence);
             $wish->setDescription($faker->optional(0.5)->text(1000));
             $dateCreated = $faker->dateTimeBetween("- 2 years");

@@ -1,0 +1,16 @@
+Menu du jour
+
+Partage sur \\WINDOWS-5J1JEPT\partage
+
+* Les relations entre entités
+    Ajout des catégories d'idées (ensemble)
+    Système de commentaires (seul)
+
+* Les requêtes complexes avec Doctrine : DQL et QueryBuilder
+    Page de liste / recherche / tri / pagination des idées
+
+Système d'utilisateur 
+    Création de l'entité et configuration de base
+    Page inscription avec formulaire
+    * La sécurité sous Symfony  
+    
