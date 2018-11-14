@@ -4,7 +4,7 @@
     <h2>{{ wish.label }}</h2>
     <div>Classée dans : {{ wish.category.name }}</div>
     <p>{{ wish.dateCreated|date("d/m/Y à H:i:s") }}</p>
-    <div>{{ wish.description }}</div>
+    <div><p>{{ wish.description }}</p></div>
 
     <a href="{{ path('wish_remove', {'id': wish.id}) }}" class="btn btn-danger">
         Supprimer</a>
