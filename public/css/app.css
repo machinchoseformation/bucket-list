@@ -1,5 +1,13 @@
 header {
-    padding-top: 30px;
+    padding-top: 10px;
+}
+
+header hr {
+    margin-top: 10px;
+}
+
+.nav>li>a {
+    padding: 2px 7px;
 }
 
 header img {
@@ -9,7 +17,7 @@ header img {
 h1 {
     font-family: 'Alfa Slab One', cursive;
     font-size: 50px;
-    margin-top: 0;
+    margin: 0;
 }
 
 h1 img {
@@ -38,7 +46,12 @@ footer nav ul {
 }
 
 @media screen and (min-width: 992px){
+
+    header hr {
+        margin-top: 0;
+    }
+
     header nav {
-        top: 18px;
+        top: 25px;
     }
 }
