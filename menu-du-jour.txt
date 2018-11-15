@@ -1,16 +1,36 @@
 Menu du jour
 
-Partage sur \\WINDOWS-5J1JEPT\partage
-
-* Les relations entre entités
-    Ajout des catégories d'idées (ensemble)
-    Système de commentaires (seul)
-
 * Les requêtes complexes avec Doctrine : DQL et QueryBuilder
-    Page de liste / recherche / tri / pagination des idées
+    Page de filtre / recherche / tri / pagination des idées
+        Pagination
+        Création d'un bon vieux formulaire HTML en GET
+            mots-clefs
+            liste des catégories
+            choix de tri
+                notes croiss.
+                notes décroiss.
+                date de création croiss.
+                date de création décroiss.
+        Traitement "manuel" des données du formulaire dans le contrôleur
+        Requête SQL dynamique dans findListWishes()
 
 Système d'utilisateur 
     Création de l'entité et configuration de base
     Page inscription avec formulaire
-    * La sécurité sous Symfony  
-    
+        Hachage du mot de passe
+    * La sécurité sous Symfony
+    Formulaire de login
+    Déconnexion
+
+    Ajouter un champ "author" aux idées
+    Sécuriser :
+        La page d'ajout d'idée
+        La page de modification des idées (réservée à l'auteur connecté)
+
+Système de liste perso d'idées
+    Ajouter une idée à sa liste
+        -> à partir de la page de détail d'une idée
+    Consulter sa liste
+        -> Auprès de chaque idée, des boutons permettant de :
+            - retirer l'idée de sa liste
+            - la marquer comme réalisée
