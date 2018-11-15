@@ -3,7 +3,9 @@
 namespace App\Command;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\Wish;
+use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -52,7 +54,7 @@ class DummyDataCommand extends ContainerAwareCommand
         $categoryRepository = $doctrine->getRepository(Category::class);
         $allCategories = $categoryRepository->findAll();
 
-        $wishNum = 1000;
+        $wishNum = 400;
         $io->text("Adding $wishNum wishes...");
         $io->progressStart($wishNum);
         for($i=0; $i<$wishNum; $i++) {
@@ -71,7 +73,24 @@ class DummyDataCommand extends ContainerAwareCommand
 
             $entityManager->persist($wish);
             $io->progressAdvance();
+
+            //commentaires
+            $commentsNum = mt_rand(0,12);
+            for($c=0; $c<$commentsNum; $c++){
+                $comment = new Comment();
+                $comment->setWish($wish);
+                $comment->setContent($faker->realText(300));
+                $comment->setEmail($faker->email);
+                $comment->setRating(mt_rand(0,5));
+                $comment->setDateCreated($faker->dateTimeBetween($dateCreated));
+                $wish->addComment($comment);
+                $entityManager->persist($comment);
+            }
+
+            $wish->updateAverageRating();
+            $entityManager->flush();
         }
+
         $io->progressFinish();
         $entityManager->flush();
         $io->text("$wishNum wishes added!");

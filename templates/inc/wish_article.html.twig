@@ -1,0 +1,9 @@
+<article>
+    <h4>
+        <a href="{{ path('wish_detail', {'id': wish.id}) }}"
+           title="Tous les détails de cette idée">
+            {{ wish.label }} ({{ wish.averageRating  }} / 5)
+        </a>
+    </h4>
+    <p>{{ wish.dateCreated|date("d/m/Y à H:i") }}</p>
+</article>

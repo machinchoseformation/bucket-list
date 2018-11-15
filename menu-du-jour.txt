@@ -2,15 +2,16 @@ Menu du jour
 
 * Les requêtes complexes avec Doctrine : DQL et QueryBuilder
     Page de filtre / recherche / tri / pagination des idées
-        Pagination
         Création d'un bon vieux formulaire HTML en GET
             mots-clefs
             liste des catégories
+                les récupérer en bdd pour afficher la liste déroulante du form
             choix de tri
                 notes croiss.
                 notes décroiss.
                 date de création croiss.
                 date de création décroiss.
+        Pagination
         Traitement "manuel" des données du formulaire dans le contrôleur
         Requête SQL dynamique dans findListWishes()
 

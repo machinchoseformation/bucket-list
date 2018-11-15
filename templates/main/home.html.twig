@@ -7,15 +7,7 @@
 
     <h3>Les 5 dernières idées</h3>
     {% for wish in wishes %}
-        <article>
-            <h4>
-                <a href="{{ path('wish_detail', {'id': wish.id}) }}"
-                   title="Tous les détails de cette idée">
-                {{ wish.label }}
-                </a>
-            </h4>
-            <p>{{ wish.dateCreated|date("d/m/Y à H:i") }}</p>
-        </article>
+        {% include('inc/wish_article.html.twig') %}
     {% endfor %}
 
 {% endblock %}

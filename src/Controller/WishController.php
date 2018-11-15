@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\Wish;
 use App\Form\CommentType;
@@ -15,14 +16,31 @@ class WishController extends Controller
     /**
      * @Route("/idees/liste", name="wish_list")
      */
-    public function list()
+    public function list(Request $request)
     {
+        //récupère les données du formulaire depuis l'URL
+        $page = $request->get('page') ? (int) $request->get('page') : 1;
+        $keyword = $request->get('kw');
+        $categoryId = (int) $request->get('cat');
+        $sort = $request->get('sort');
+
         $repo = $this->getDoctrine()->getRepository(Wish::class);
         //voir dans WishRepository pour cette méthode perso
-        $wishes = $repo->findListWishes();
+        $result = $repo->findListWishes($page, $keyword, $categoryId, $sort);
+
+        //pour le select dans le formulaire
+        $categoryRepo = $this->getDoctrine()->getRepository(Category::class);
+        $categories = $categoryRepo->findBy([], ['name' => 'ASC']);
 
         return $this->render("wish/list.html.twig", [
-            "wishes" => $wishes,
+            "wishes" => $result['wishes'],
+            "totalWishes" => $result['total'],
+            "lastPage" => $result['lastPage'],
+            "categories" => $categories,
+            "page" => $page,
+            "keyword" => $keyword,
+            "categoryId" => $categoryId,
+            "sort" => $sort,
         ]);
     }
 
@@ -43,6 +61,9 @@ class WishController extends Controller
 
            $entityManager = $this->getDoctrine()->getManager();
            $entityManager->persist($comment);
+           $entityManager->flush();
+
+           $wish->updateAverageRating();
            $entityManager->flush();
 
            $this->addFlash("success", "Votre commentaire a été publié !");

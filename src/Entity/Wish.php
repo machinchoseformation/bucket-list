@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="App\Repository\WishRepository")
  */
 class Wish
@@ -66,18 +67,34 @@ class Wish
 
     /**
      * @ORM\OrderBy({"dateCreated" = "DESC"})
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="wish", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="wish", orphanRemoval=true, cascade={"persist"})
      */
     private $comments;
 
-    public function getRatingAverage()
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $averageRating;
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function updateAverageRating()
     {
-        $total = 0;
-        foreach($this->comments as $comment){
-            $total += $comment->getRating();
+        $average = null;
+
+        if (count($this->getComments()) > 0){
+            $total = 0;
+            foreach($this->getComments() as $c){
+                $total += $c->getRating();
+            }
+            $average = $total / count($this->getComments());
         }
-        return $total / count($this->comments);
+
+        $this->setAverageRating($average);
     }
+    
 
     public function __construct()
     {
@@ -188,6 +205,18 @@ class Wish
                 $comment->setWish(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAverageRating(): ?float
+    {
+        return round($this->averageRating, 1);
+    }
+
+    public function setAverageRating(?float $averageRating): self
+    {
+        $this->averageRating = $averageRating;
 
         return $this;
     }

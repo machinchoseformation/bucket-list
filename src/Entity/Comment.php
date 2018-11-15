@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment
@@ -32,7 +33,7 @@ class Comment
     private $dateCreated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Wish", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Wish", inversedBy="comments", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $wish;

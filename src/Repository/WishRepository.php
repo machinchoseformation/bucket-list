@@ -19,33 +19,68 @@ class WishRepository extends ServiceEntityRepository
         parent::__construct($registry, Wish::class);
     }
 
-    public function findListWishes()
+    public function findListWishes(
+        ?int $page = 1,
+        ?string $keyword = null,
+        ?int $categoryId = null,
+        ?string $sort = null
+    )
     {
-        //version en DQL
-        /*
-        $dql = "SELECT w 
-                FROM App\Entity\Wish w 
-                WHERE w.dateCreated >= 2018
-                ORDER BY w.label DESC";
-        $query = $this->getEntityManager()->createQuery($dql);
-        */
-
-        //version en QueryBuilder
+        //notre query builder
         $qb = $this->createQueryBuilder('w');
-        $qb->select('w')
-            ->andWhere('w.dateCreated >= 2018')
-            ->addOrderBy('w.label', 'DESC');
 
-        $keyword = "Ipsum";
+        //recherche ?
         if ($keyword){
+            //ajoute une clause where
             $qb->andWhere("w.label LIKE :kw");
             $qb->setParameter('kw', '%' . $keyword . '%');
         }
 
-        $query = $qb->getQuery();
+        //filtre par catégorie ?
+        if ($categoryId){
+            //ajoute le where
+            $qb->andWhere("w.category = :cat");
+            $qb->setParameter("cat", $categoryId);
+        }
 
+        //on compte d'abord le nombre total de résultat avec ces where !!
+        $qb->select('COUNT(w) AS tot');
+        $total = $qb->getQuery()->getSingleScalarResult();
+
+        //on change le select opéré...
+        //on veut maintenant récupérer les wish et non le compte
+        $qb->select('w');
+
+        //tri
+        switch ($sort){
+            case "date-asc":
+                $qb->orderBy('w.dateCreated', 'ASC');
+                break;
+            case "date-desc":
+                $qb->orderBy('w.dateCreated', 'DESC');
+                break;
+            case "note-asc":
+                $qb->orderBy('w.averageRating', 'ASC');
+                break;
+            case "note-desc":
+                $qb->orderBy('w.averageRating', 'DESC');
+                break;
+        }
+
+        //pagination
+        $numPerPage = 20; //nombre de wish par page
+        $offset = ($page - 1) * $numPerPage; //le # du premier wish à récupérer
+        $qb->setMaxResults($numPerPage);
+        $qb->setFirstResult($offset);
+
+        $query = $qb->getQuery();
         $wishes = $query->getResult();
-        return $wishes;
+
+        return [
+            "wishes" => $wishes,
+            "total" => $total,
+            "lastPage" => ceil($total/$numPerPage),
+        ];
     }
 
     // /**

@@ -2,7 +2,7 @@
 
 {% block main %}
     <h2>{{ wish.label }}</h2>
-    <p>Moyenne des notes : {{ wish.getRatingAverage() }} / 5</p>
+    <p>Moyenne des notes : {{ wish.averageRating }} / 5</p>
     <div>Classée dans : {{ wish.category.name }}</div>
     <p>{{ wish.dateCreated|date("d/m/Y à H:i:s") }}</p>
     <div><p>{{ wish.description }}</p></div>

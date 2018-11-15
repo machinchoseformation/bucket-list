@@ -4,13 +4,70 @@
 
     <h2>Les idées !!</h2>
 
+    <form method="get">
+        <div class="form-group">
+            <input type="search" name="kw" placeholder="Lorem, ipsum..."
+            value="{{ keyword }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <select name="sort" class="form-control">
+                <option value="date-asc" {{ sort == 'date-asc' ? 'selected' }}>Par date croiss.</option>
+                <option value="date-desc"  {{ sort == 'date-desc' ? 'selected' }}>Par date décroiss.</option>
+                <option value="note-asc"  {{ sort == 'note-asc' ? 'selected' }}>Par note croiss.</option>
+                <option value="note-desc"  {{ sort == 'note-desc' ? 'selected' }}>Par note décroiss.</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select name="cat" class="form-control">
+                {% for cat in categories %}
+                    <option value="{{ cat.id }}" {{ cat.id == categoryId ? 'selected' }}>{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button class="btn">OK!</button>
+        </div>
+    </form>
+
     <section>
+        <h2>{{ totalWishes }} résultat{{ totalWishes > 1 ? 's' : '' }} !</h2>
         {% for wish in wishes %}
-            <article>
-                <h3>{{ wish.label }}</h3>
-            </article>
+            {% include('inc/wish_article.html.twig') %}
         {% endfor %}
     </section>
+
+    {% if page > 1 %}
+    <a class="btn-sm btn-primary" href="{{
+        path('wish_list', {
+            'page': page-1,
+            'sort': sort,
+            'cat':categoryId,
+            'kw':keyword
+        }) }}">Préc.
+    </a>
+    {% endif %}
+
+    {% for i in 1..lastPage %}
+        <a class="btn-sm btn-primary" href="{{
+        path('wish_list', {
+            'page': i,
+            'sort': sort,
+            'cat':categoryId,
+            'kw':keyword
+        }) }}">{{ i }}
+        </a>
+    {% endfor %}
+
+    {% if page < lastPage %}
+    <a class="btn-sm btn-primary" href="{{
+        path('wish_list', {
+            'page': page+1,
+            'sort': sort,
+            'cat':categoryId,
+            'kw':keyword
+        }) }}">Suiv.
+    </a>
+    {% endif %}
 
 {% endblock %}
 
