@@ -33,6 +33,7 @@
                         <li><a href="{{ path('wish_list') }}" title="Les idées">Les idées</a></li>
                         <li><a href="{{ path('wish_create') }}" title="Ajouter une idée">Ajouter une idée</a></li>
                         {% if app.user %}
+                            <li><a href="{{ path('list_list') }}">Ma liste</a></li>
                         <li><a href="{{ path('user_logout') }}">
                                 Déconnexion ({{ app.user.username }})
                             </a></li>

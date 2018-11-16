@@ -6,4 +6,11 @@
         </a>
     </h4>
     <p>{{ wish.dateCreated|date("d/m/Y à H:i") }}</p>
+    {% if app.user %}
+        {% if (wish.listWishes|length > 0) %}
+            <a href="{{ path('list_remove', {'id': wish.id}) }}" class="btn btn-warning">Retirer de ma liste</a>
+        {% else %}
+            <a href="{{ path('list_add', {'id': wish.id}) }}" class="btn btn-success">Ajouter à ma liste</a>
+        {% endif %}
+    {% endif %}
 </article>

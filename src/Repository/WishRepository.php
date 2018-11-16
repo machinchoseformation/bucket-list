@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Wish;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -19,11 +20,17 @@ class WishRepository extends ServiceEntityRepository
         parent::__construct($registry, Wish::class);
     }
 
+    public function findHomeWishes()
+    {
+
+    }
+
     public function findListWishes(
         ?int $page = 1,
         ?string $keyword = null,
         ?int $categoryId = null,
-        ?string $sort = null
+        ?string $sort = null,
+        ?User $user = null
     )
     {
         //notre query builder
@@ -50,6 +57,13 @@ class WishRepository extends ServiceEntityRepository
         //on change le select opéré...
         //on veut maintenant récupérer les wish et non le compte
         $qb->select('w');
+
+        if ($user) {
+            $qb
+                ->leftJoin('w.listWishes', 'uw', 'WITH', 'uw.user = :user')
+                ->setParameter('user', $user)
+                ->addSelect('uw');
+        }
 
         //tri
         switch ($sort){

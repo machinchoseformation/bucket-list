@@ -32,6 +32,7 @@
     <section>
         <h2>{{ totalWishes }} résultat{{ totalWishes > 1 ? 's' : '' }} !</h2>
         {% for wish in wishes %}
+
             {% include('inc/wish_article.html.twig') %}
         {% endfor %}
     </section>

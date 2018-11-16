@@ -28,7 +28,7 @@ class WishController extends Controller
 
         $repo = $this->getDoctrine()->getRepository(Wish::class);
         //voir dans WishRepository pour cette méthode perso
-        $result = $repo->findListWishes($page, $keyword, $categoryId, $sort);
+        $result = $repo->findListWishes($page, $keyword, $categoryId, $sort, $this->getUser());
 
         //pour le select dans le formulaire
         $categoryRepo = $this->getDoctrine()->getRepository(Category::class);
@@ -88,6 +88,11 @@ class WishController extends Controller
     */
    public function remove(Wish $wish)
    {
+       //est-ce que c'est l'auteur de l'idée qui est en train d'accéder à la page ?
+       if ($this->getUser() !== $wish->getAuthor()){
+           throw $this->createAccessDeniedException("Vous n'êtes pas l'auteur !");
+       }
+
        $entityManager = $this->getDoctrine()->getManager();
        $entityManager->remove($wish);
        $entityManager->flush();
@@ -113,6 +118,11 @@ class WishController extends Controller
         //récupère le wish à modifier depuis la bdd
         $wishRepository = $this->getDoctrine()->getRepository(Wish::class);
         $wish = $wishRepository->find($id);
+
+        //est-ce que c'est l'auteur de l'idée qui est en train d'accéder à la page ?
+        if ($this->getUser() !== $wish->getAuthor()){
+            throw $this->createAccessDeniedException("Vous n'êtes pas l'auteur !");
+        }
 
         if (empty($wish)){
             throw $this->createNotFoundException("Oups ! Cette idée n'existe pas !");
@@ -159,6 +169,8 @@ class WishController extends Controller
        if ($form->isSubmitted() && $form->isValid()){
             //renseigne les champs manquants
            $wish->setDateCreated( new \DateTime() );
+           //crée la relation avec le user connecté
+           $wish->setAuthor( $this->getUser() );
 
            //sauvegarde
            $entityManager = $this->getDoctrine()->getManager();

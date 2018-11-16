@@ -2,11 +2,13 @@
 
 {% block main %}
     <h2>{{ wish.label }}</h2>
+    <p>Créée par {{ wish.author.username }}</p>
     <p>Moyenne des notes : {{ wish.averageRating }} / 5</p>
     <div>Classée dans : {{ wish.category.name }}</div>
     <p>{{ wish.dateCreated|date("d/m/Y à H:i:s") }}</p>
     <div><p>{{ wish.description }}</p></div>
 
+    <a href="{{ path('list_add', {'id': wish.id}) }}" class="btn btn-success">Ajouter à ma liste</a>
     <a href="{{ path('wish_remove', {'id': wish.id}) }}" class="btn btn-danger">
         Supprimer</a>
     <a href="{{ path('wish_edit', {'id': wish.id}) }}" class="btn btn-warning">

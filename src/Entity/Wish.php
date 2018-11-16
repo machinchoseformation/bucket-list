@@ -83,6 +83,11 @@ class Wish
     private $author;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserWish", mappedBy="wish")
+     */
+    private $listWishes;
+
+    /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
@@ -105,6 +110,8 @@ class Wish
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->listWishes = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -235,6 +242,37 @@ class Wish
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserWish[]
+     */
+    public function getListWishes(): Collection
+    {
+        return $this->listWishes;
+    }
+
+    public function addListWish(UserWish $listWish): self
+    {
+        if (!$this->listWishes->contains($listWish)) {
+            $this->listWishes[] = $listWish;
+            $listWish->setWish($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListWish(UserWish $listWish): self
+    {
+        if ($this->listWishes->contains($listWish)) {
+            $this->listWishes->removeElement($listWish);
+            // set the owning side to null (unless already changed)
+            if ($listWish->getWish() === $this) {
+                $listWish->setWish(null);
+            }
+        }
 
         return $this;
     }

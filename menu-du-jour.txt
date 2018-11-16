@@ -1,13 +1,5 @@
 Menu du jour
 
-Système d'utilisateur
-    Utiliser le remember me
-    Sécuriser contre les attaques CSRF
-    Sécuriser :
-        La page d'ajout d'idée
-        La page de modification des idées (réservée à l'auteur connecté)
-    Ajouter un champ "author" aux idées
-
 Système de liste perso d'idées
     Ajouter une idée à sa liste
         -> à partir de la page de détail d'une idée

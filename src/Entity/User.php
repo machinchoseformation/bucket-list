@@ -50,9 +50,15 @@ class User implements UserInterface
      */
     private $wishesCreated;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\UserWish", mappedBy="user")
+     */
+    private $listWishes;
+
     public function __construct()
     {
         $this->wishesCreated = new ArrayCollection();
+        $this->listWishes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,6 +179,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($wishesCreated->getAuthor() === $this) {
                 $wishesCreated->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserWish[]
+     */
+    public function getListWishes(): Collection
+    {
+        return $this->listWishes;
+    }
+
+    public function addListWish(UserWish $listWish): self
+    {
+        if (!$this->listWishes->contains($listWish)) {
+            $this->listWishes[] = $listWish;
+            $listWish->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeListWish(UserWish $listWish): self
+    {
+        if ($this->listWishes->contains($listWish)) {
+            $this->listWishes->removeElement($listWish);
+            // set the owning side to null (unless already changed)
+            if ($listWish->getUser() === $this) {
+                $listWish->setUser(null);
             }
         }
 

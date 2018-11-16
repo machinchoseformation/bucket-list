@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block main %}
+    <h2>Ma liste</h2>
+
+    <table class="table table-striped">
+    {% for userWish in userWishes %}
+        {% set wish = userWish.wish %}
+        <tr>
+            <td>
+                <a href="{{ path('wish_detail', {'id': wish.id}) }}"
+                   title="Tous les détails de cette idée">
+                    {{ wish.label }} ({{ wish.averageRating  }} / 5)
+                </a>
+
+            </td>
+            <td>
+            {% if userWish.done %}
+                <a href="{{ path('list_toggle_done', {'id': userWish.id}) }}" class="btn-sm btn-success">Marquer comme non-réalisée</a>
+            {% else %}
+                <a href="{{ path('list_toggle_done', {'id': userWish.id}) }}" class="btn-sm btn-success">Marquer comme réalisée</a>
+            {% endif %}
+            </td>
+            <td>
+                <a href="{{ path('list_remove', {'id': userWish.id}) }}" class="btn-sm btn-danger">X</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
+{% block title %}Ma Liste | {{ parent() }}{% endblock %}
