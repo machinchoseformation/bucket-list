@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Category;
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Entity\UserWish;
 use App\Entity\Wish;
 use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -46,6 +47,9 @@ class DummyDataCommand extends ContainerAwareCommand
         $connection->query("SET FOREIGN_KEY_CHECKS = 0");
         $connection->query("TRUNCATE TABLE wish");
         $connection->query("TRUNCATE TABLE category");
+        $connection->query("TRUNCATE TABLE user");
+        $connection->query("TRUNCATE TABLE comment");
+        $connection->query("TRUNCATE TABLE user_wish");
         $connection->query("SET FOREIGN_KEY_CHECKS = 1");
         $io->text("Tables truncated!");
 
@@ -66,10 +70,11 @@ class DummyDataCommand extends ContainerAwareCommand
         /*
          * les users
          */
+        $users = [];
+
         $user = new User();
         $user->setUsername("yo");
         $user->setEmail("yo@gmail.com");
-        //php bin/console app:dummy-data
 
         //hash le mdp
         $hash = $this->passwordEncoder->encodePassword($user, "yo");
@@ -81,9 +86,30 @@ class DummyDataCommand extends ContainerAwareCommand
         $entityManager->persist($user);
         $entityManager->flush();
 
-        //ici, créer plusieurs users bidons...
+        $users[] = $user;
 
-        $wishNum = 400;
+        $io->text("Creating 50 users...");
+        for($i=0; $i<50; $i++){
+            //le username et le password sont pareils !
+            $usernameAndPassword = $faker->userName;
+            $user = new User();
+            $user->setUsername($usernameAndPassword);
+            $user->setEmail($faker->email);
+
+            //hash le mdp
+            $hash = $this->passwordEncoder->encodePassword($user, $usernameAndPassword);
+            $user->setPassword($hash);
+
+            $user->setDateRegistered($faker->dateTimeBetween("- 3 years"));
+            $user->setRoles(["ROLE_USER"]);
+
+            $entityManager->persist($user);
+            $users[] = $user;
+        }
+        $entityManager->flush();
+        $io->text("Done");
+
+        $wishNum = 200;
         $io->text("Adding $wishNum wishes...");
         $io->progressStart($wishNum);
         for($i=0; $i<$wishNum; $i++) {
@@ -116,6 +142,18 @@ class DummyDataCommand extends ContainerAwareCommand
                 $wish->addComment($comment);
                 $entityManager->persist($comment);
             }
+
+            //idées dans liste perso
+            $userWishNum = mt_rand(0,20);
+            for($uw=0; $uw<$userWishNum; $uw++){
+                $userWish = new UserWish();
+                $userWish->setUser($users[array_rand($users)]);
+                $userWish->setWish($wish);
+                $userWish->setDateAdded($faker->dateTimeBetween($wish->getDateCreated()));
+                $userWish->setDone($faker->boolean(20));
+                $entityManager->persist($userWish);
+            }
+            $entityManager->flush();
 
             $wish->updateAverageRating();
             $entityManager->flush();
