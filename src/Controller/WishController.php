@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 class WishController extends Controller
 {
     /**
@@ -80,6 +82,8 @@ class WishController extends Controller
    }
 
    /**
+    * empêche l'accès à cette page aux utilisateurs n'ayant pas de rôle
+    * @IsGranted("ROLE_USER")
     * @Route("/idee/supprimer/{id}", name="wish_remove")
     */
    public function remove(Wish $wish)
@@ -99,6 +103,13 @@ class WishController extends Controller
      */
     public function edit($id, Request $request)
     {
+        //empêche l'accès aux utilisateurs non connectés :
+        $this->denyAccessUnlessGranted("ROLE_USER");
+        //ou comme ça :
+        if (!$this->isGranted("ROLE_USER")){
+            throw $this->createAccessDeniedException("non !");
+        }
+
         //récupère le wish à modifier depuis la bdd
         $wishRepository = $this->getDoctrine()->getRepository(Wish::class);
         $wish = $wishRepository->find($id);

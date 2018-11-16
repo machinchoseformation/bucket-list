@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Category;
 use App\Entity\Comment;
+use App\Entity\User;
 use App\Entity\Wish;
 use App\Form\CommentType;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -13,10 +14,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class DummyDataCommand extends ContainerAwareCommand
 {
     protected static $defaultName = 'app:dummy-data';
+    protected $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        parent::__construct();
+        $this->passwordEncoder = $passwordEncoder;
+    }
 
     protected function configure()
     {
@@ -54,6 +63,26 @@ class DummyDataCommand extends ContainerAwareCommand
         $categoryRepository = $doctrine->getRepository(Category::class);
         $allCategories = $categoryRepository->findAll();
 
+        /*
+         * les users
+         */
+        $user = new User();
+        $user->setUsername("yo");
+        $user->setEmail("yo@gmail.com");
+        //php bin/console app:dummy-data
+
+        //hash le mdp
+        $hash = $this->passwordEncoder->encodePassword($user, "yo");
+        $user->setPassword($hash);
+
+        $user->setDateRegistered(new \DateTime("- 3 years"));
+        $user->setRoles(["ROLE_USER"]);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        //ici, créer plusieurs users bidons...
+
         $wishNum = 400;
         $io->text("Adding $wishNum wishes...");
         $io->progressStart($wishNum);
@@ -70,7 +99,8 @@ class DummyDataCommand extends ContainerAwareCommand
             $wish->setDateCreated($dateCreated);
             $dateUpdated = $faker->optional(0.3)->dateTimeBetween($dateCreated);
             $wish->setDateUpdated($dateUpdated);
-
+            //affecte un auteur à l'idée
+            $wish->setAuthor($user);
             $entityManager->persist($wish);
             $io->progressAdvance();
 

@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block main %}
+    <h2>Inscription !</h2>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success">C'est parti !</button>
+    {{ form_end(form) }}
+{% endblock %}

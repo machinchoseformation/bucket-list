@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+Connexion
+{% endblock %}
+
+{% block main %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form method="post">
+        <label for="username">Pseudo</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="_password" />
+
+        {# Se souvenir de moi... voir security.yaml #}
+        <input type="checkbox" id="remember_me" name="_remember_me" checked />
+        <label for="remember_me">Rester connecté</label>
+
+        {# protection contre les CSRF... voir security.yaml #}
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}">
+
+        <button type="submit">login</button>
+    </form>
+{% endblock %}
+

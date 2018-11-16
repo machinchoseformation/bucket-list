@@ -77,6 +77,12 @@ class Wish
     private $averageRating;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="wishesCreated")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
+    /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
@@ -217,6 +223,18 @@ class Wish
     public function setAverageRating(?float $averageRating): self
     {
         $this->averageRating = $averageRating;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

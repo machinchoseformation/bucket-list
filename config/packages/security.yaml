@@ -9,7 +9,8 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: username
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -17,16 +18,25 @@ security:
         main:
             anonymous: true
             logout_on_user_change: true
-            # activate different ways to authenticate
+            form_login:
+                login_path: user_login
+                check_path: user_login
+                #pour protéger le formulaire de login contre les att. CSRF
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path: user_logout
+            remember_me:
+                #récupère APP_SECRET depuis le fichier .env
+                secret:   '%env(string:APP_SECRET)%'
+                lifetime: 60480000 # 100 weeks in seconds
+                path:     /
 
-            # http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: true
-            # https://symfony.com/doc/current/security/form_login_setup.html
+    #les "admin" ont tous les pouvoirs des "user"
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/idee/creer$, roles: ROLE_USER }

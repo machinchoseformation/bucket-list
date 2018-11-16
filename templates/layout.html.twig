@@ -32,7 +32,14 @@
                         <li><a href="{{ path('home') }}" title="Retour à l'accueil">Accueil</a></li>
                         <li><a href="{{ path('wish_list') }}" title="Les idées">Les idées</a></li>
                         <li><a href="{{ path('wish_create') }}" title="Ajouter une idée">Ajouter une idée</a></li>
-
+                        {% if app.user %}
+                        <li><a href="{{ path('user_logout') }}">
+                                Déconnexion ({{ app.user.username }})
+                            </a></li>
+                        {% else %}
+                        <li><a href="{{ path('user_login') }}">Connexion</a></li>
+                        <li><a href="{{ path('user_register') }}">Inscription</a></li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
