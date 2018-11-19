@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterType;
+use App\Mailer\BucketMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +38,7 @@ class UserController extends Controller
     /**
      * @Route("/inscription", name="user_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, BucketMailer $bucketMailer)
     {
         if ($this->getUser()){
             $this->addFlash('warning', 'Vous êtes déjà inscrit !');
@@ -61,6 +62,10 @@ class UserController extends Controller
             $em->flush();
 
             $this->addFlash("success", "Votre compte a été créé !");
+
+            //envoi de l'email
+            $bucketMailer->sendRegistrationMail($user);
+
             return $this->redirectToRoute("home");
         }
 

@@ -2,14 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Entity\Comment;
 use App\Entity\UserWish;
 use App\Entity\Wish;
-use App\Form\CommentType;
-use App\Form\WishType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

@@ -7,7 +7,9 @@ use App\Entity\Comment;
 use App\Entity\Wish;
 use App\Form\CommentType;
 use App\Form\WishType;
+use App\Uploader\Uploader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -155,7 +157,7 @@ class WishController extends Controller
    /**
     * @Route("/idee/creer", name="wish_create")
     */
-   public function create(Request $request)
+   public function create(Request $request, Uploader $uploader)
    {
        //une instance de notre entité qu'on associe au form
        $wish = new Wish();
@@ -165,8 +167,20 @@ class WishController extends Controller
         //prend les données soumises et les injecte dans notre entité
        $form->handleRequest($request);
 
+       //gère l'upload
+       $error = $uploader->setUploadedFile( $wish->getImageFile() );
+       if ($form->isSubmitted()) {
+           if ($error){
+               $form->addError($error);
+           }
+       }
+
        //si le formulaire est valide...
        if ($form->isSubmitted() && $form->isValid()){
+
+           $uploader->uploadFile();
+           $wish->setImage( $uploader->getNewFileNameWithExt() );
+
             //renseigne les champs manquants
            $wish->setDateCreated( new \DateTime() );
            //crée la relation avec le user connecté

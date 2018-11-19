@@ -127,6 +127,22 @@ class DummyDataCommand extends ContainerAwareCommand
             $wish->setDateUpdated($dateUpdated);
             //affecte un auteur à l'idée
             $wish->setAuthor($user);
+
+            switch($randomCategory->getName()){
+                case "Folie":
+                    $wish->setImage("crazy.jpg");
+                    break;
+                case "Développement":
+                    $wish->setImage("development.jpg");
+                    break;
+                case "Sport":
+                    $wish->setImage("sport.jpg");
+                    break;
+                case "Voyage":
+                    $wish->setImage("travel.jpg");
+                    break;
+            }
+
             $entityManager->persist($wish);
             $io->progressAdvance();
 

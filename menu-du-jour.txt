@@ -1,12 +1,36 @@
 Menu du jour
 
-Système de liste perso d'idées
-    Ajouter une idée à sa liste
-        -> à partir de la page de détail d'une idée
-    Consulter sa liste
-        -> Auprès de chaque idée, des boutons permettant de :
-            - retirer l'idée de sa liste
-            - la marquer comme réalisée
+    BUCKET-LIST
+        Envoi d'email lors de l'inscription
+            * Le conteneur de services, les services
+            * L'injection de dépendances
 
-Upload d'image
-Envoi d'email lors de l'inscription
+        Upload d'image
+            * Manipulation d'image avec SimpleImage
+
+    SLAQUE
+        * Développer une API REST
+            Les requêtes, les verbes HTTP
+            Retourner une réponse en JSON, sérialisation
+
+        * Stratégie AJAX sous Symfony
+
+        Let's go
+            -> http://bit.ly/slaque
+
+            Setup du projet
+                créer le projet
+                install des dépendances
+                    apache-pack
+                    simpleimage, faker, etc.
+                bdd
+                phpstorm
+                git
+
+            Planification
+                Routes
+                Contrôleurs
+                Entités
+
+            Code
+                Système de sécurité

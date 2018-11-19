@@ -31,6 +31,12 @@ article {
     background-color: #f9f9f9;
     border-radius: 2px;
     margin: 9px 0;
+    display: flex;
+}
+
+article img {
+    margin-right: 20px;
+    width: 250px;
 }
 
 footer {

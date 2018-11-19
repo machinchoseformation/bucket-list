@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Wish
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -48,6 +50,34 @@ class Wish
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $image;
+
+    /**
+     * J'utilise cette propriété dans le WishType
+     * Contient un UploadedFile
+     * Cette propriété n'est pas sauvegardé par Doctrine
+     * @Assert\Image(
+     *     maxSize="10M",
+     *     maxSizeMessage="Maximum 10 megabytes SVP !",
+     *     mimeTypesMessage="Veuillez charger une image !!"
+     * )
+     */
+    private $imageFile;
+
+    /**
+     * @return mixed
+     */
+    public function getImageFile(): ?UploadedFile
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param mixed $imageFile
+     */
+    public function setImageFile(UploadedFile $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+    }
 
     /**
      * @ORM\Column(type="datetime")

@@ -28,7 +28,7 @@ class WishType extends AbstractType
                 "required" => false,
                 "label" => "Et plus en détails ?",
             ])
-            ->add('image', FileType::class, [
+            ->add('imageFile', FileType::class, [
                 "required" => false,
                 "label" => "Une image pour représenter votre idée",
             ])
